@@ -2,65 +2,73 @@ import { StatusCodes } from 'http-status-codes'
 import { expect, test } from '@playwright/test'
 
 // GET
-test('GET order with empty username and password should receive 500 - INTERNAL_SERVER_ERROR', async ({ request }) => {
+test('GET order with empty username and password should receive 500 - INTERNAL_SERVER_ERROR', async ({
+  request,
+}) => {
   const loginParameters = {
     username: '',
     password: '',
   }
   const response = await request.get('https://backend.tallinn-learning.ee/test-orders', {
-    params:loginParameters
+    params: loginParameters,
   })
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect(response.status()).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
 })
 
-test('GET order with valid username and valid password should receive 200- OK', async ({ request }) => {
+test('GET order with valid username and valid password should receive 200- OK', async ({
+  request,
+}) => {
   const loginParameters = {
     username: 'qwr',
     password: 'qwr',
   }
   const response = await request.get('https://backend.tallinn-learning.ee/test-orders', {
-    params:loginParameters
+    params: loginParameters,
   })
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect(response.status()).toBe(StatusCodes.OK)
 })
 
-
-test('GET order with valid password without username should receive 500 - INTERNAL_SERVER_ERROR', async ({ request }) => {
+test('GET order with valid password without username should receive 500 - INTERNAL_SERVER_ERROR', async ({
+  request,
+}) => {
   const loginParameters = {
     password: 'qwr',
   }
   const response = await request.get('https://backend.tallinn-learning.ee/test-orders', {
-    params:loginParameters
+    params: loginParameters,
   })
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect(response.status()).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
 })
 
-
-test('GET order with valid username without password should receive 500 - INTERNAL_SERVER_ERROR', async ({ request }) => {
+test('GET order with valid username without password should receive 500 - INTERNAL_SERVER_ERROR', async ({
+  request,
+}) => {
   const loginParameters = {
-    username: 'qwr'
+    username: 'qwr',
   }
   const response = await request.get('https://backend.tallinn-learning.ee/test-orders', {
-    params:loginParameters
+    params: loginParameters,
   })
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect(response.status()).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
 })
 
-test('GET order with blanks as username and password should receive 200 - OK', async ({ request }) => {
+test('GET order with blanks as username and password should receive 200 - OK', async ({
+  request,
+}) => {
   const loginParameters = {
     username: ' ',
     password: '  ',
   }
   const response = await request.get('https://backend.tallinn-learning.ee/test-orders', {
-    params:loginParameters
+    params: loginParameters,
   })
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
@@ -89,36 +97,42 @@ test('GET order with id = 3 should receive 200 - OK', async ({ request }) => {
 })
 
 // DELETE
-test('DELETE order with existing id and valid api key should be deleted and receive 204 - NO-CONTENT', async ({ request }) => {
-  const requestHeaders: {api_key: string} = {
+test('DELETE order with existing id and valid api key should be deleted and receive 204 - NO-CONTENT', async ({
+  request,
+}) => {
+  const requestHeaders: { api_key: string } = {
     api_key: '1234567890111111',
-  };
+  }
   const response = await request.delete('https://backend.tallinn-learning.ee/test-orders/10', {
-    headers:requestHeaders,
+    headers: requestHeaders,
   })
   console.log('response status:', response.status())
   console.log('response body:', await response.text())
   expect(response.status()).toBe(StatusCodes.NO_CONTENT)
 })
 
-test('DELETE order with negative id and valid api key should receive 400 - BAD_REQUEST', async ({ request }) => {
-  const requestHeaders: {api_key: string} = {
+test('DELETE order with negative id and valid api key should receive 400 - BAD_REQUEST', async ({
+  request,
+}) => {
+  const requestHeaders: { api_key: string } = {
     api_key: '1234567890111111',
-  };
+  }
   const response = await request.delete('https://backend.tallinn-learning.ee/test-orders/-10', {
-    headers:requestHeaders,
+    headers: requestHeaders,
   })
   console.log('response status:', response.status())
   console.log('response body:', await response.text())
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('DELETE order with existing id and invalid api key should receive 401 - UNAUTHORIZED', async ({ request }) => {
-  const requestHeaders: {api_key: string} = {
+test('DELETE order with existing id and invalid api key should receive 401 - UNAUTHORIZED', async ({
+  request,
+}) => {
+  const requestHeaders: { api_key: string } = {
     api_key: '123456789011111100',
-  };
+  }
   const response = await request.delete('https://backend.tallinn-learning.ee/test-orders/10', {
-    headers:requestHeaders,
+    headers: requestHeaders,
   })
   console.log('response status:', response.status())
   console.log('response body:', await response.text())
@@ -126,7 +140,9 @@ test('DELETE order with existing id and invalid api key should receive 401 - UNA
 })
 
 //PUT
-test('PUT the order with valid id and valid api key should receive 200 - OK', async ({ request }) => {
+test('PUT the order with valid id and valid api key should receive 200 - OK', async ({
+  request,
+}) => {
   const requestBody = {
     status: 'OPEN',
     courierId: 0,
@@ -147,7 +163,9 @@ test('PUT the order with valid id and valid api key should receive 200 - OK', as
   expect(response.status()).toBe(StatusCodes.OK)
 })
 
-test('PUT the order with valid id and 18 digit api key should receive 401 - UNAUTHORIZED', async ({ request }) => {
+test('PUT the order with valid id and 18 digit api key should receive 401 - UNAUTHORIZED', async ({
+  request,
+}) => {
   const requestBody = {
     status: 'OPEN',
     courierId: 0,
@@ -168,7 +186,9 @@ test('PUT the order with valid id and 18 digit api key should receive 401 - UNAU
   expect(response.status()).toBe(StatusCodes.UNAUTHORIZED)
 })
 
-test('PUT the order with valid id and 16 digit string api key should receive 401 - UNAUTHORIZED', async ({ request }) => {
+test('PUT the order with valid id and 16 digit string api key should receive 401 - UNAUTHORIZED', async ({
+  request,
+}) => {
   const requestBody = {
     status: 'OPEN',
     courierId: 0,
@@ -189,7 +209,9 @@ test('PUT the order with valid id and 16 digit string api key should receive 401
   expect(response.status()).toBe(StatusCodes.UNAUTHORIZED)
 })
 
-test('PUT the order with invalid id and valid api key should receive 400 - BAD_REQUEST', async ({ request }) => {
+test('PUT the order with invalid id and valid api key should receive 400 - BAD_REQUEST', async ({
+  request,
+}) => {
   const requestBody = {
     status: 'OPEN',
     courierId: 0,
@@ -211,8 +233,7 @@ test('PUT the order with invalid id and valid api key should receive 400 - BAD_R
 })
 
 test('PUT order with valid id valid api key with should receive 200 - OK', async ({ request }) => {
-  const requestBody = {
-  }
+  const requestBody = {}
   const requestHeaders = {
     api_key: '1234567890111111',
   }
@@ -225,7 +246,9 @@ test('PUT order with valid id valid api key with should receive 200 - OK', async
   expect(response.status()).toBe(StatusCodes.OK)
 })
 
-test('PUT order with valid id valid api key withoud body should receive 400 - BAD_REQUEST', async ({ request }) => {
+test('PUT order with valid id valid api key withoud body should receive 400 - BAD_REQUEST', async ({
+  request,
+}) => {
   const requestHeaders = {
     api_key: '1234567890111111',
   }
@@ -237,7 +260,9 @@ test('PUT order with valid id valid api key withoud body should receive 400 - BA
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('PUT the order with valid id, valid api key string courierId should receive 400 - BAD_REQUEST', async ({ request }) => {
+test('PUT the order with valid id, valid api key string courierId should receive 400 - BAD_REQUEST', async ({
+  request,
+}) => {
   const requestBody = {
     status: 'OPEN',
     courierId: 'we',
@@ -258,7 +283,9 @@ test('PUT the order with valid id, valid api key string courierId should receive
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('PUT the order with string id, valid api key should receive 400 - BAD_REQUEST', async ({ request }) => {
+test('PUT the order with string id, valid api key should receive 400 - BAD_REQUEST', async ({
+  request,
+}) => {
   const requestBody = {
     status: 'OPEN',
     courierId: 234,
@@ -346,7 +373,6 @@ test('PUT the order with valid id, valid api key and non string comment should r
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 */
-
 
 /* THESE ARE NOT CORRECT TYPE OF ID BUT RETURN SUCCESS
 *

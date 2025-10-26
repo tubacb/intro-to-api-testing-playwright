@@ -81,7 +81,7 @@ test('GET order with negative id than should receive 400 - BAD_REQUEST', async (
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('GET order with id = 3 and 10 digits string than should receive 200 - OK', async ({ request }) => {
+test('GET order with id = 3 should receive 200 - OK', async ({ request }) => {
   const response = await request.get('https://backend.tallinn-learning.ee/test-orders/3')
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
@@ -101,7 +101,7 @@ test('DELETE order with existing id and valid api key should be deleted and rece
   expect(response.status()).toBe(StatusCodes.NO_CONTENT)
 })
 
-test('DELETE order with negative id and valid api key should be deleted and receive 400 - BAD_REQUEST', async ({ request }) => {
+test('DELETE order with negative id and valid api key should receive 400 - BAD_REQUEST', async ({ request }) => {
   const requestHeaders: {api_key: string} = {
     api_key: '1234567890111111',
   };
@@ -113,7 +113,7 @@ test('DELETE order with negative id and valid api key should be deleted and rece
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('DELETE order with existing id and invalid api key should be deleted and receive 401 - UNAUTHORIZED', async ({ request }) => {
+test('DELETE order with existing id and invalid api key should receive 401 - UNAUTHORIZED', async ({ request }) => {
   const requestHeaders: {api_key: string} = {
     api_key: '123456789011111100',
   };

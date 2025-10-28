@@ -5,7 +5,7 @@ import { LoanDTO } from '../src/dto/loan-dto'
 
 const url = 'https://backend.tallinn-learning.ee/api/loan-calc/decision'
 let requestBody
-let reponseBody = new RiskDTO()
+let reponseBody
 
 test('The risk score of application with positive income, positive debt for the user older than 16 should be negative decision', async ({
   request,
@@ -13,7 +13,7 @@ test('The risk score of application with positive income, positive debt for the 
   // Build and send a GET request to the server
   requestBody = new LoanDTO(100, 0, 17, true, 1000, 12)
   const response = await request.post(url, { data: requestBody })
-  reponseBody = await response.json()
+  reponseBody = new RiskDTO(await response.json())
   console.log('response body:', await response.json())
   console.log('response headers:', response.headers())
   // Check response status, decision and level
@@ -28,7 +28,7 @@ test('The risk score of application with positive income, positive debt for the 
   // Build and send a GET request to the server
   const requestBody = new LoanDTO(2000, 0, 30, true, 500, 6)
   const response = await request.post(url, { data: requestBody })
-  reponseBody = await response.json()
+  reponseBody = new RiskDTO(await response.json())
   console.log('response body:', await response.json())
   console.log('response headers:', response.headers())
   // Check response status, decision and level
@@ -43,7 +43,7 @@ test('The risk score of application with positive income, positive debt for the 
   // Build and send a GET request to the server
   const requestBody = new LoanDTO(20000, 0, 30, true, 500, 12)
   const response = await request.post(url, { data: requestBody })
-  reponseBody = await response.json()
+  reponseBody = new RiskDTO(await response.json())
   console.log('response body:', await response.json())
   console.log('response headers:', response.headers())
   // Check response status, decision and level

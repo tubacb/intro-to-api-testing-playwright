@@ -83,3 +83,23 @@
     <td style="border: 1px solid #000; padding: 8px;"> 200 - OK </td>
   </tr>
 </table>
+
+<table style="border-collapse: collapse; width: 100%;">
+  <tr>
+    <th colspan="2" style="border: 2px solid #000; background-color: #dbeafe; padding: 8px; text-align: left;"> LOAN RISK DECISION SERVICE </th>
+  </tr>
+ <tr>
+    <td style="border: 1px solid #000; padding: 8px;">  +income, +debt with valid loan amount and period for the user>16 </td>
+    <td style="border: 1px solid #000; padding: 8px;"> negative </td>
+  </tr>
+  <tr>
+    <td style="border: 1px solid #000; padding: 8px;">  +income, +debt with valid loan amount and period for the user>16 </td>
+    <td style="border: 1px solid #000; padding: 8px;"> positive - medium risk </td>
+  </tr>
+   <tr>
+    <td style="border: 1px solid #000; padding: 8px;">  +income, +debt with valid loan amount and period for the user>16 </td>
+    <td style="border: 1px solid #000; padding: 8px;"> positive  - low risk</td>
+  </tr>
+  
+  </table>
+

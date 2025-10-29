@@ -6,20 +6,27 @@ import { LoanDTO } from '../src/dto/loan-dto'
 const url = 'https://backend.tallinn-learning.ee/api/loan-calc/decision'
 let requestBody
 let reponseBody
-
+let riskDto
 test('The risk score of application with positive income, positive debt for the user older than 16 should be negative decision', async ({
   request,
 }) => {
   // Build and send a GET request to the server
   requestBody = new LoanDTO(100, 0, 17, true, 1000, 12)
   const response = await request.post(url, { data: requestBody })
-  reponseBody = new RiskDTO(await response.json())
+  reponseBody = await response.json()
+  riskDto = new RiskDTO(
+    reponseBody.riskScore,
+    reponseBody.riskLevel,
+    reponseBody.riskPeriods,
+    reponseBody.applicationId,
+    reponseBody.riskDecision,
+  )
   console.log('response body:', await response.json())
   console.log('response headers:', response.headers())
   // Check response status, decision and level
   expect.soft(response.status()).toBe(StatusCodes.OK)
-  expect.soft(reponseBody.riskDecision).toBe('negative')
-  expect.soft(reponseBody.riskLevel).toBe('Very High Risk')
+  expect.soft(riskDto.riskDecision).toBe('negative')
+  expect.soft(riskDto.riskLevel).toBe('Very High Risk')
 })
 
 test('The risk score of application with positive income, positive debt for the user older than 16 should be Positive Decision with Medium risk', async ({
@@ -28,13 +35,20 @@ test('The risk score of application with positive income, positive debt for the 
   // Build and send a GET request to the server
   const requestBody = new LoanDTO(2000, 0, 30, true, 500, 6)
   const response = await request.post(url, { data: requestBody })
-  reponseBody = new RiskDTO(await response.json())
+  reponseBody = await response.json()
+  riskDto = new RiskDTO(
+    reponseBody.riskScore,
+    reponseBody.riskLevel,
+    reponseBody.riskPeriods,
+    reponseBody.applicationId,
+    reponseBody.riskDecision,
+  )
   console.log('response body:', await response.json())
   console.log('response headers:', response.headers())
   // Check response status, decision and level
   expect.soft(response.status()).toBe(StatusCodes.OK)
-  expect.soft(reponseBody.riskDecision).toBe('positive')
-  expect.soft(reponseBody.riskLevel).toBe('Medium Risk')
+  expect.soft(riskDto.riskDecision).toBe('positive')
+  expect.soft(riskDto.riskLevel).toBe('Medium Risk')
 })
 
 test('The risk score of application with positive income, positive debt for the user older than 16 should be Positive Decision with Low risk', async ({
@@ -43,11 +57,18 @@ test('The risk score of application with positive income, positive debt for the 
   // Build and send a GET request to the server
   const requestBody = new LoanDTO(20000, 0, 30, true, 500, 12)
   const response = await request.post(url, { data: requestBody })
-  reponseBody = new RiskDTO(await response.json())
+  reponseBody = await response.json()
+  riskDto = new RiskDTO(
+    reponseBody.riskScore,
+    reponseBody.riskLevel,
+    reponseBody.riskPeriods,
+    reponseBody.applicationId,
+    reponseBody.riskDecision,
+  )
   console.log('response body:', await response.json())
   console.log('response headers:', response.headers())
   // Check response status, decision and level
   expect.soft(response.status()).toBe(StatusCodes.OK)
-  expect.soft(reponseBody.riskDecision).toBe('positive')
-  expect.soft(reponseBody.riskLevel).toBe('Low Risk')
+  expect.soft(riskDto.riskDecision).toBe('positive')
+  expect.soft(riskDto.riskLevel).toBe('Low Risk')
 })
